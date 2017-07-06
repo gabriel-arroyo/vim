@@ -1,0 +1,33 @@
+import sys
+list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+copy = list
+print(copy)
+list[2] = 23
+print(copy)
+print("length is: " + str(len(list)))
+print("max is: " + str(max(list)))
+letters = ['a', 'c', 'e', 'f', 'd', 'b']
+print("last letter: " + str(max(letters)))
+print("sorted: " + str(sorted(letters)))
+
+renglones = "\n".join(['renglon 1', 'renglon 2', 'renglon 3'])
+print(renglones)
+
+def top_three(input_list):
+    """Returns a list of the three largest elements input_list in order from largest to smallest.
+
+    If input_list has fewer than three elements, return input_list element sorted largest to smallest/
+    """
+    # TODO: implement this function
+
+    length = len(input_list)
+    if length > 3:
+        return sorted(input_list, reverse = True)[:3]
+    else:
+        return sorted(input_list, reverse = True)
+
+print(str(top_three([2,1])))
+
+print(3/2)
+print(3//2)
+print(str(sys.version_info))

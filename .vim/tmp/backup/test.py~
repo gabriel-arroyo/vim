@@ -1,0 +1,34 @@
+import cv2  # OpenCV Library
+
+
+# Load our overlay image: mustache.png
+imgMustache = cv2.imread('yoona1.jpg', -1)
+cv2.imshow("original", imgMustache)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+# Create the mask for the mustache
+orig_mask = imgMustache[:, :, 3]
+cv2.imshow("mask", orig_mask)
+ch2 = imgMustache[:, :, 1]
+cv2.imshow("chanel1", orig_mask)
+ch3 = imgMustache[:, :, 2]
+cv2.imshow("chanel2", orig_mask)
+cv2.waitKey(0)
+cv2.waitKey(0)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+# Create the inverted mask for the mustache
+orig_mask_inv = cv2.bitwise_not(orig_mask)
+cv2.imshow("inverted mask", orig_mask_inv)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+# Convert mustache image to BGR
+# and save the original image size (used later when re-sizing the image)
+imgMustache = imgMustache[:, :, 0:3]
+cv2.imshow("bgr resized", imgMustache)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+origMustacheHeight, origMustacheWidth = imgMustache.shape[:2]

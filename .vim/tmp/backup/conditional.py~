@@ -1,0 +1,10 @@
+def wich_prize(points):
+    if 0 < points < 50:
+        print("A wooden rabbit")
+    else:
+        print("wrong")
+
+
+wich_prize(39)
+i = [0, 1, 2, 3, 4]
+print(i[1])

@@ -1,0 +1,23 @@
+#!/bin/bash
+max_brightness=$(cat /sys/class/backlight/intel_backlight/max_brightness)
+brightness=$(cat /sys/class/backlight/intel_backlight/brightness)
+
+echo "max: $max_brightness"
+echo "actual: $brightness"
+
+let brightness=$brightness-100
+
+if [ $brightness -gt 1 ]
+then
+    echo "echo $brightness > /sys/class/backlight/intel_backlight/brightness" | sudo zsh
+else
+    echo "echo 1 > /sys/class/backlight/intel_backlight/brightness" | sudo zsh
+    let brightness=1
+fi
+echo "new: $brightness"
+
+let perecent=$brightness*100
+echo $perecent
+#let perecent=$((brightness/max_brightness))
+#echo $perecent
+notify-send Brightness "$((perecent/max_brightness))" -t 200

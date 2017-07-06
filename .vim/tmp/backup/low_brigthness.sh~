@@ -1,0 +1,3 @@
+#!/bin/bash
+number=$1
+su -c 'echo $number > /sys/class/backlight/intel_backlight/brightness'

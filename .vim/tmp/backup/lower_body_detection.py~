@@ -1,0 +1,25 @@
+import cv2
+
+
+baseCascadePath = "usr/local/share/OpenCV/haarcascades/"
+lowerBodyCascadePath = baseCascadePath + "haarcascade_lowerbody.xml"
+
+cascade = cv2.CascadeClassifier(lowerBodyCascadePath)
+
+while(True):
+    img = cv2.imread("yoona1.jpg")
+    cv2.imshow("i", img)
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    cv2.imshow("i", gray)
+    key = cv2.waitKey(1)
+    detected = cascade.detectMultiScale(gray, 1.1, 4)
+
+    for (x, y, w, h) in detected:
+        cv2.rectangle(gray, (x, y), (x+w, y+h), (0, 0, 0), 5)
+
+    cv2.imshow("img", gray)
+    key = cv2.waitKey(1)
+    if key == 27:
+        break
+
+cv2.destroyAllWindows()

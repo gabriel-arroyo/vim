@@ -1,0 +1,42 @@
+import media
+import fresh_tomatoes
+
+toy_story = media.Movie("Toy Story",
+                        "A story of a boy and his toys",
+                        "http://ecx.images-amazon.com/"
+                        "images/I/51NpxQ0ma8L.jpg",
+                        "https://www.youtube.com/watch?v=KYz2wyBy3kc")
+
+avatar = media.Movie("Avatar",
+                     "A marine on an alien planet",
+                     "http://www.impawards.com/2009/posters/avatar_xlg.jpg",
+                     "https://www.youtube.com/watch?v=d1_JBMrrYw8")
+
+school_of_rock = media.Movie("School of Rock",
+                             "Using rock music to learn",
+                             "https://upload.wikimedia.org/"
+                             "wikipedia/en/1/11/School_of_Rock_Poster.jpg",
+                             "https://www.youtube.com/watch?v=XCwy6lW5Ixc")
+
+midnight_in_paris = media.Movie("Midnight in Paris",
+                                "Going back in time to meet authors",
+                                "http://www.impawards.com/2011/"
+                                "posters/midnight_in_paris_xlg.jpg",
+                                "https://www.youtube.com/watch?v=FAfR8omt-CY")
+
+hunger_games = media.Movie("Hunger Games",
+                           "A really real reality show",
+                           "https://2982-presscdn-29-70-pagely."
+                           "netdna-ssl.com/wp-content/uploads/"
+                           "2015/11/The-Hunger-Games-Poster1.jpg",
+                           "https://www.youtube.com/watch?v=mfmrPu43DF8")
+# print avatar.storyline
+# avatar.show_trailer()
+
+# movies = [toy_story, avatar, school_of_rock, midnight_in_paris, hunger_games]
+# fresh_tomatoes.open_movies_page(movies)
+
+# print(media.Movie.VALID_RATINGS)
+print(media.Movie.__doc__)
+print(media.Movie.__name__)
+print(media.Movie.__module__)

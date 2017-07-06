@@ -1,0 +1,31 @@
+world_heritage_locations = {(13.4125, 103.866667): "Angkor Wat",
+                            (25.73333, 32.6): "Ancient Thebes",
+                            (30.330556, 35.4433330): "Petra",
+                            (-13.116667, -72.583333): "Machu Picchu"}
+
+
+def box(width, height, symbol = '*'):
+    """print a box made up of asterisks, or some other character.
+
+    width: width of box in characters, must be at least 2
+    height: height of box in lines, must be at least 2
+    symbol: a single character string used to draw the box edges
+    """
+    print(symbol * width)  # print top edge of box
+
+    # print sides of box
+    for _ in range(height-2):
+        print(symbol + " " * (width-2) + symbol)
+
+    print(symbol * width)  # print bottom edge of box
+
+
+box(10, 4, '%')
+
+def todo_list(new_task, base_list=['wake up']):
+    base_list.append(new_task)
+    return base_list
+
+print(todo_list("check the mail"))
+print(todo_list("begin orbital transfer"))
+

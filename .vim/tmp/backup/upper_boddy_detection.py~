@@ -1,0 +1,139 @@
+import cv2
+
+
+def detect(image, cascade, label, color):
+    detected = cascade.detectMultiScale(gray)
+    for (xx, yy, ww, hh) in detected:
+        cv2.rectangle(image, (xx, yy), (xx+ww, yy+hh), color, 2)
+        point = (xx + 5, yy + 15)
+        cv2.putText(image, label, point, font, 0.5, color, 2, cv2.LINE_AA)
+
+
+basePath = "/usr/local/share/OpenCV/haarcascades/"
+
+upper_path = basePath + "haarcascade_upperbody.xml"
+lower_path = basePath + "haarcascade_lowerbody.xml"
+face_path = basePath + "haarcascade_frontalface_default.xml"
+fullbody_path = basePath + "haarcascade_fullbody.xml"
+
+upperbody_cascade = cv2.CascadeClassifier(upper_path)
+lowerbody_cascade = cv2.CascadeClassifier(lower_path)
+face_cascade = cv2.CascadeClassifier(face_path)
+
+
+cap = cv2.VideoCapture(0)
+
+red = (12, 41, 204)
+blue = (204, 130, 12)
+green = (13, 193, 55)
+yellow = (25, 232, 232)
+
+font = cv2.FONT_HERSHEY_SIMPLEX
+
+noFaceCount = 0
+
+while True:
+    ret, img = cap.read()
+    # img = cv2.imread('mans.jpg')
+    img = cv2.flip(img, 1)
+
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    imgh, imgw = gray.shape
+
+    count = 0
+    isUpperDetected = False
+    isFaceDetected = False
+    # lastLowCorner = None
+    # lastPoint = None
+    # actualPoint = None
+    # lastWidth = None
+    ActualWidth = None
+    faceDetected = face_cascade.detectMultiScale(gray)
+    for (xf, yf, wf, hf) in faceDetected:
+        isFaceDetected = True
+        face_area = wf*hf
+        center_face_x = (xf + wf/2)
+        count = count + 1
+        correction = int(2.5*wf)
+        upper_x = xf-wf
+        upper_w = 3*wf
+        # cv2.rectangle(img, (xf-wf, yf+hf), (xf+2*wf, yf+4*hf), green, 2)
+        xrf = xf - correction
+        wrf = wf + 2 * correction
+        roi_face = gray[0:imgh, xrf:xrf+wrf]
+
+        upperDetected = upperbody_cascade.detectMultiScale(roi_face)
+        for (xu, yu, wu, hu) in upperDetected:
+            upper_area = wu*hu
+            if face_area > upper_area:
+                continue
+            center_upper_x = int(xrf+xu + wu/2)
+            center_upper_y = int(yu + hu/2)
+            head_start = int(yu + hu*0.28)
+            body_start = int(yu + hu*0.63)
+            upper_length = int(hu*0.72)
+            half_body = head_start + int((44*upper_length)/27)
+            # cv2.rectangle(img, (xu, yu), (xu+wu, yu+hu), blue, 2)
+            # cv2.rectangle(img, (xrf+xu, body_start),
+            #               (xrf+xu+wu, half_body), red, 2)
+            isUpperDetected = True
+            break
+
+    if isFaceDetected:
+        if isUpperDetected:
+            offset = int((center_upper_x - center_face_x)/2)
+            # cv2.rectangle(img, (upper_x + offset, yf + hf), (upper_x + upper_w + offset, yf+4*hf), blue, 2)
+            actualPoint = (upper_x + offset, yf + hf)
+            low_corner = (upper_x + upper_w + offset,
+                          int((yf+4*hf+half_body)/2))
+        else:
+            actualPoint = (xf-wf, yf+hf)
+            low_corner = xf+2*wf, yf+4*hf
+
+        try:
+            lastPoint
+            if lastPoint is None:
+                lastPoint = actualPoint
+        except:
+            lastPoint = actualPoint
+
+        try:
+            lastLowCorner
+            if lastLowCorner is None:
+                lastLowCorner = low_corner
+        except:
+            lastLowCorner = low_corner
+
+        change_x = ((actualPoint[0] - lastPoint[0])*100)/imgw
+        change_y = ((actualPoint[1] - lastPoint[1])*100)/imgh
+        print(actualPoint)
+        print(lastPoint)
+        print("change_x: " + str(change_x) + "  change_y: " + str(change_y))
+
+        if change_x > 20 or change_y > 20:
+            actualPoint = lastPoint
+            low_corner = lastLowCorner
+        else:
+            actualPoint = (int((actualPoint[0] + lastPoint[0])/2),
+                           int((actualPoint[1] + lastPoint[1])/2))
+            low_corner = (int((low_corner[0] + lastLowCorner[0])/2),
+                          int((low_corner[1] + lastLowCorner[1])/2))
+
+        cv2.rectangle(img, actualPoint, low_corner, blue, 2)
+        lastPoint = actualPoint
+        lastLowCorner = low_corner
+    else:
+        noFaceCount = noFaceCount + 1
+        if noFaceCount > 10:
+            actualPoint = None
+            lastPoint = None
+            low_corner = None
+            lastLowCorner = None
+
+    cv2.imshow('img', img)
+    k = cv2.waitKey(30) & 0xff
+    if k == 27:
+        break
+
+cap.release()
+cv2.destroyAllWindows()

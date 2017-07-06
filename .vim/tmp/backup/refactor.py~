@@ -1,0 +1,23 @@
+def check_answers(my_answers, answers):
+    """
+    Checks the five answers provided to a multiple choice quiz
+    and returns the results.
+    """
+    results = []
+    count_correct = 0
+
+    for i in range(len(answers)):
+        results.append(my_answers[i] == answers[i])
+        if results[i]:
+            count_correct += 1
+
+    if count_correct/(len(answers)) > 0.7:
+        return "Congratulations, you passed the test! You scored "\
+                + str(count_correct) + " out of " + str(len(answers)) + "."
+    else:
+        return "Unfortunately, you did not pass. You scored "\
+                + str(count_correct) + " out of " + str(len(answers)) + "."
+
+
+res = check_answers([1, 2, 3, 4], [1, 2, 3, 5])
+print(res)

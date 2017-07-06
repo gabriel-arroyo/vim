@@ -1,0 +1,13 @@
+def cylinder_volume(height, radius):
+    """Calculate the volume of a cylinder"""
+    pi = 3.141592
+    return height * pi * radius ** 2
+
+def print_greeting():
+    print("Hello world")
+
+res = cylinder_volume(10, 3)
+
+print res
+a = print_greeting()
+print a
